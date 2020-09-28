@@ -1,0 +1,25 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-url {
+  margin: 10px 0 0 0;
+}
+
+.error {
+  color: crimson;
+}
+
+.url-output > input {
+  text-align: center;
+  font-size: 20px;
+}

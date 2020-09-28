@@ -1,7 +1,7 @@
 const express = require("express");
 const server = express();
 const cors = require("cors");
-const shortid = require("shortid");
+
 const Url = require("./database/url-model");
 
 server.use(express.json());
@@ -26,6 +26,20 @@ server.get("/:id", async (req, res) => {
     } catch {
       res.status(404).json({ error: "URL does not exist" });
     }
+  }
+});
+
+server.post("/", async (req, res) => {
+  const { url } = req.body;
+
+  try {
+    let result = await Url.checkUrl(url);
+    cache[result.id] = result;
+    res.status(200).json(result);
+  } catch {
+    let result = await Url.setUrl(url);
+    cache[result.id] = result;
+    res.status(201).json(result);
   }
 });
 

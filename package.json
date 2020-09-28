@@ -6,11 +6,13 @@
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js",
+    "client": "cd client && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "antd": "^4.6.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.1.1",

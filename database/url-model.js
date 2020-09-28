@@ -1,8 +1,10 @@
 const db = require("./db-config");
+const shortid = require("shortid");
 
 module.exports = {
   getUrl,
   setUrl,
+  checkUrl,
 };
 
 function getUrl(id) {
@@ -10,12 +12,15 @@ function getUrl(id) {
 }
 
 function setUrl(url) {
-  console.log(url);
-  return db("url")
-    .insert({ url }, "id")
-    .then(([id]) => {
-      console.log(id);
+  const id = shortid.generate();
 
+  return db("url")
+    .insert({ id, url }, "id")
+    .then(([id]) => {
       return db("url").where({ id }).first();
     });
+}
+
+function checkUrl(url) {
+  return db("url").where({ url }).first();
 }
