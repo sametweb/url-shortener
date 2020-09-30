@@ -24,7 +24,7 @@ server.get("/:id", async (req, res) => {
       cache[id] = result;
       res.redirect(result.url);
     } catch {
-      res.redirect("http://localhost:3000/not-found");
+      res.redirect(`${process.env.FRONT_END}/not-found`);
     }
   }
 });

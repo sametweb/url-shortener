@@ -20,7 +20,7 @@ function InputArea() {
     if (isValid) {
       resetState();
       axios
-        .post("http://localhost:4000/", { url })
+        .post(process.env.BACK_END, { url })
         .then((res) => {
           setShortened(`${window.location.href}${res.data.id}`);
         })
