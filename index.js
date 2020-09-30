@@ -43,6 +43,8 @@ server.post("/", async (req, res) => {
   }
 });
 
-server.listen(4000, () => {
+const PORT = process.env.PORT || 4000;
+
+server.listen(PORT, () => {
   console.log("server is working on 4000");
 });
