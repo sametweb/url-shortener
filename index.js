@@ -29,6 +29,15 @@ server.get("/:id", async (req, res) => {
   }
 });
 
+server.get(
+  "/.well-known/acme-challenge/8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk",
+  (req, res) => {
+    res.send(
+      "8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk.Wz3C7IFAfMOY58c3qdkr3FQNtww-Hl23OduJFBWwtgo"
+    );
+  }
+);
+
 server.post("/", async (req, res) => {
   const { url } = req.body;
 
