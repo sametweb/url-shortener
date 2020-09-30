@@ -20,7 +20,7 @@ require("greenlock-express")
   })
   // Serves on 80 and 443
   // Get's SSL certificates magically!
-  .serve(app);
+  .serve(server);
 
 server.get("/", (req, res) => {
   res.send("URL Shortener");
