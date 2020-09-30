@@ -1,11 +1,15 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 
 import { Row, Col } from "antd";
 import { Layout } from "antd";
 
 import InputArea from "./components/InputArea";
-import RedirectUrl from "./components/RedirectUrl";
 import Header from "./components/Header";
 import About from "./components/About";
 import Footer from "./components/Footer";
@@ -19,10 +23,15 @@ function App() {
           <Row>
             <Col span={4}></Col>
             <Col span={16} className="input-area">
-              <Route path="/" exact component={InputArea} />
               <Switch>
+                <Route path="/" exact component={InputArea} />
                 <Route path="/about" component={About} />
-                <Route path="/:id" component={RedirectUrl} />
+                <Route path="/not-found">
+                  <span>Sorry, the URL you requested cannot be found! :(</span>
+                </Route>
+                <Route path="/:random">
+                  <Redirect to="/" />
+                </Route>
               </Switch>
             </Col>
             <Col span={4}></Col>

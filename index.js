@@ -17,14 +17,14 @@ server.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   if (cache[id] !== undefined) {
-    res.status(200).json(cache[id]);
+    res.redirect(cache[id].url);
   } else {
     try {
       let result = await Url.getUrl(id);
       cache[id] = result;
-      res.status(200).json(result);
+      res.redirect(result.url);
     } catch {
-      res.status(404).json({ error: "URL does not exist" });
+      res.redirect("http://localhost:3000/not-found");
     }
   }
 });
