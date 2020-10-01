@@ -1,5 +1,5 @@
 # url-shortener
-URL shortening app back-end repository
+URL shortening app back-end repository. For front-end, please refer to [url-shortener-fe repository](https://github.com/sametweb/url-shortener-fe).
 
 The application is deployed on https://ou.tc
 
