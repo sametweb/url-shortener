@@ -9,3 +9,11 @@ The application is deployed on https://ou.tc
 | /        | POST   | Creates a new link with unique ID in the database. Request Body: `{ "url": "https://yoururl.com" }` |
 
 API Key feature for authentication purposes will be added later.
+
+Environment Variables:
+
+| Key | Value |
+| --- | --- |
+| `FRONT_END` | The url for the deployed deployed-end app |
+| `DATABASE_URL` | On Heroku, no need to create one. On other platforms, this is the variable that points to your database. |
+| `DB_ENV` | Default 'development' if not set. Set it to 'production' when deployed. |
