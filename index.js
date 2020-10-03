@@ -10,11 +10,11 @@ server.use(express.json());
 server.use(cors());
 server.use(helmet());
 
+const cache = {};
+
 server.get("/", (req, res) => {
   res.send("URL Shortener");
 });
-
-const cache = {};
 
 server.get("/:id", async (req, res) => {
   const { id } = req.params;
@@ -32,15 +32,6 @@ server.get("/:id", async (req, res) => {
   }
 });
 
-server.get(
-  "/.well-known/acme-challenge/8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk",
-  (req, res) => {
-    res.send(
-      "8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk.Wz3C7IFAfMOY58c3qdkr3FQNtww-Hl23OduJFBWwtgo"
-    );
-  }
-);
-
 server.post("/", async (req, res) => {
   const { url } = req.body;
 
@@ -54,6 +45,15 @@ server.post("/", async (req, res) => {
     res.status(201).json(result);
   }
 });
+
+server.get(
+  "/.well-known/acme-challenge/8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk",
+  (req, res) => {
+    res.send(
+      "8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk.Wz3C7IFAfMOY58c3qdkr3FQNtww-Hl23OduJFBWwtgo"
+    );
+  }
+);
 
 const PORT = process.env.PORT || 4000;
 
