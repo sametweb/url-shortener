@@ -11,16 +11,16 @@ function getUrl(id) {
   return db("url").where({ id }).first();
 }
 
-function setUrl(url) {
+function setUrl(url, user_id) {
   const id = shortid.generate();
 
   return db("url")
-    .insert({ id, url }, "id")
+    .insert({ id, url, user_id }, "id")
     .then(([id]) => {
       return db("url").where({ id }).first();
     });
 }
 
-function checkUrl(url) {
-  return db("url").where({ url }).first();
+function checkUrl(url, user_id) {
+  return db("url").where({ url, user_id }).first();
 }

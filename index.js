@@ -1,18 +1,22 @@
-const express = require("express");
-const server = express();
-
-const cors = require("cors");
-const helmet = require("helmet");
-
-const Url = require("./database/url-model");
+require("dotenv").config();
+const express = require("express"),
+  server = express(),
+  cors = require("cors"),
+  helmet = require("helmet"),
+  decodeIdToken = require("./middleware/decodeIdToken");
 
 server.use(express.json());
 server.use(cors());
 server.use(helmet());
+server.use(decodeIdToken);
+
+const Url = require("./database/url-model");
 
 const cache = {};
 
-server.get("/", (req, res) => {
+server.post("/login", (req, res) => {});
+
+server.get("/", async (req, res) => {
   res.send("URL Shortener");
 });
 
@@ -33,14 +37,23 @@ server.get("/:id", async (req, res) => {
 });
 
 server.post("/", async (req, res) => {
+  const { user_id } = req;
   const { url } = req.body;
 
+  if (!url) {
+    res
+      .status(400)
+      .json({
+        message: "You must provide a url parameter in the request body.",
+      });
+  }
+
   try {
-    let result = await Url.checkUrl(url);
+    let result = await Url.checkUrl(url, user_id);
     cache[result.id] = result;
     res.status(200).json(result);
   } catch {
-    let result = await Url.setUrl(url);
+    let result = await Url.setUrl(url, user_id);
     cache[result.id] = result;
     res.status(201).json(result);
   }
