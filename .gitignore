@@ -2,3 +2,4 @@ node_modules
 client
 url-shortener-fe
 .env
+omiturl-firebase-service-key.json
