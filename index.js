@@ -1,13 +1,13 @@
 require("dotenv").config();
 const express = require("express"),
-  server = express(),
   cors = require("cors"),
+  server = express(),
   helmet = require("helmet"),
   decodeIdToken = require("./middleware/decodeIdToken");
 
-server.use(express.json());
-server.use(cors());
 server.use(helmet());
+server.use(cors());
+server.use(express.json());
 server.use(decodeIdToken);
 
 const Url = require("./database/url-model");
@@ -45,17 +45,18 @@ server.post("/", async (req, res) => {
       .status(400)
       .json({
         message: "You must provide a url parameter in the request body.",
-      });
-  }
-
-  try {
-    let result = await Url.checkUrl(url, user_id);
-    cache[result.id] = result;
-    res.status(200).json(result);
-  } catch {
-    let result = await Url.setUrl(url, user_id);
-    cache[result.id] = result;
-    res.status(201).json(result);
+      })
+      .end();
+  } else {
+    try {
+      let result = await Url.checkUrl(url, user_id);
+      cache[result.id] = result;
+      res.status(200).json(result);
+    } catch {
+      let result = await Url.setUrl(url, user_id);
+      cache[result.id] = result;
+      res.status(201).json(result);
+    }
   }
 });
 
