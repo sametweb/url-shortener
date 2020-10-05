@@ -12,7 +12,6 @@ const decodeIdToken = require("./middleware/decodeIdToken");
 server.use(express.json());
 server.use(cors());
 server.use(helmet());
-server.use(decodeIdToken);
 
 const cache = {};
 
@@ -36,7 +35,7 @@ server.get("/:id", async (req, res) => {
   }
 });
 
-server.post("/", async (req, res) => {
+server.post("/", decodeIdToken, async (req, res) => {
   const { user_id } = req;
   const { url } = req.body;
 
