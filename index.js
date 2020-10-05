@@ -9,13 +9,8 @@ const Url = require("./database/url-model");
 
 const decodeIdToken = require("./middleware/decodeIdToken");
 
-const corsOptions = {
-  origin: true,
-  optionsSuccessStatus: 200,
-};
-
 server.use(express.json());
-server.use(cors(corsOptions));
+server.use(cors());
 server.use(helmet());
 server.use(decodeIdToken);
 
