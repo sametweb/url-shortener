@@ -3,7 +3,7 @@ admin.initializeApp();
 
 module.exports = async (req, _, next) => {
   try {
-    const idToken = req.headers.authorization;
+    const idToken = req.headers.ID_TOKEN;
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     req.user_id = decodedToken.uid;
   } catch {
