@@ -10,7 +10,7 @@ const Url = require("./database/url-model");
 const decodeIdToken = require("./middleware/decodeIdToken");
 
 const corsOptions = {
-  origin: req.headers.origin,
+  origin: "https://omiturl.com",
   optionsSuccessStatus: 200,
   credentials: true,
 };
