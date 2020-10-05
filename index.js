@@ -12,7 +12,6 @@ const decodeIdToken = require("./middleware/decodeIdToken");
 const corsOptions = {
   origin: true,
   optionsSuccessStatus: 200,
-  credentials: true,
 };
 
 server.use(express.json());
