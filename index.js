@@ -16,7 +16,10 @@ const cache = {};
 
 server.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader("Access-Control-Allow-Origin", process.env.FRONT_END);
+  res.setHeader("Access-Control-Allow-Origin", [
+    "https://omiturl.com",
+    "https://ou.tc",
+  ]);
 
   // Request methods you wish to allow
   res.setHeader(
