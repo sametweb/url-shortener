@@ -9,15 +9,18 @@ const Url = require("./database/url-model");
 
 const decodeIdToken = require("./middleware/decodeIdToken");
 
-server.use(helmet());
-server.use(cors());
+var corsOptions = {
+  origin: "https://omiturl.com",
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+
 server.use(express.json());
+server.use(cors(corsOptions));
+server.use(helmet());
 server.use(decodeIdToken);
-server.disable("x-powered-by");
 
 const cache = {};
-
-server.post("/login", (req, res) => {});
 
 server.get("/", async (req, res) => {
   res.send("URL Shortener");
