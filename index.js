@@ -1,18 +1,40 @@
 require("dotenv").config();
-const express = require("express"),
-  cors = require("cors"),
-  server = express(),
-  helmet = require("helmet"),
-  decodeIdToken = require("./middleware/decodeIdToken");
+const express = require("express");
+const cors = require("cors");
+const server = express();
+const helmet = require("helmet");
+const decodeIdToken = require("./middleware/decodeIdToken");
 
-server.use(helmet());
 server.use(cors());
+server.use(helmet());
 server.use(express.json());
 server.use(decodeIdToken);
 
 const Url = require("./database/url-model");
 
 const cache = {};
+
+server.use(function (req, res, next) {
+  // Website you wish to allow to connect
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONT_END);
+
+  // Request methods you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  // Request headers you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, Content-Type, Authorization"
+  );
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  // res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 server.post("/login", (req, res) => {});
 
