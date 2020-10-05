@@ -16,7 +16,12 @@ const cache = {};
 
 server.use(function (req, res, next) {
   // Website you wish to allow to connect
-  const allowedOrigins = ["https://omiturl.com", "https://ou.tc"];
+  const allowedOrigins = [
+    "https://omiturl.com",
+    "https://omiturl.com/",
+    "https://ou.tc",
+    "https://ou.tc/",
+  ];
   const requestOrigin = req.headers.origin;
   if (requestOrigin in allowedOrigins) {
     res.setHeader("Access-Control-Allow-Origin", requestOrigin);
