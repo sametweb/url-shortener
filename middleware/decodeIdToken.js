@@ -3,6 +3,7 @@ admin.initializeApp();
 
 module.exports = async (req, res, next) => {
   const { idToken } = req.body;
+
   if (idToken === "0") {
     req.user_id = idToken;
     next();

@@ -3,6 +3,26 @@ function validateUrl(url) {
   return regex.test(url);
 }
 
+function shortenURL(url) {
+  const body = { url, idToken: "0" };
+
+  fetch("https://ou.tc/", {
+    method: "post",
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      window.prompt("Your Shortened URL:", `ou.tc/${data.id}`);
+    })
+    .catch(console.log);
+}
+
 const CONTEXT_MENU_ID = "SHORTEN_URL";
 
 function getword(info, tab) {
@@ -24,7 +44,8 @@ function getword(info, tab) {
   console.log({ isValid, link });
 
   if (isValid) {
-    alert("URL is valid.");
+    shortenURL(link);
+    console.log("url is valid");
   } else {
     alert("URL is invalid!");
   }
@@ -45,5 +66,6 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     chrome.tabs.sendMessage(activeTab.id, {
       message: "clicked_browser_action",
     });
+    chrome.tabs.create({ url: "https://omiturl.com" });
   });
 });
