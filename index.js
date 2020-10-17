@@ -36,6 +36,7 @@ server.get("/:id", async (req, res) => {
 });
 
 server.post("/", decodeIdToken, async (req, res) => {
+  console.log("hostname", req.hostname);
   const { user_id } = req;
   const { url } = req.body;
 
