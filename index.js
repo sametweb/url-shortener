@@ -7,8 +7,6 @@ const server = express();
 
 const Url = require("./database/url-model");
 
-const decodeIdToken = require("./middleware/decodeIdToken");
-
 server.use(express.json());
 server.use(cors());
 server.use(helmet());
@@ -35,7 +33,7 @@ server.get("/:id", async (req, res) => {
   }
 });
 
-server.post("/", decodeIdToken, async (req, res) => {
+server.post("/", async (req, res) => {
   console.log("hostname", req.hostname);
   const { user_id } = req;
   const { url } = req.body;
