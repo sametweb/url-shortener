@@ -14,8 +14,13 @@ server.use(helmet());
 const cache = {};
 
 server.get("/", async (req, res) => {
-  const urls = await Url.getAllUrls();
-  res.status(200).json(urls);
+  try {
+    const urls = await Url.getAllUrls();
+    res.status(200).json(urls);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error fetching all URLs", error });
+  }
 });
 
 server.get("/:id", async (req, res) => {
