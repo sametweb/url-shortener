@@ -14,7 +14,8 @@ server.use(helmet());
 const cache = {};
 
 server.get("/", async (req, res) => {
-  res.send("URL Shortener");
+  const urls = await Url.getAllUrls();
+  res.status(200).json(urls);
 });
 
 server.get("/:id", async (req, res) => {

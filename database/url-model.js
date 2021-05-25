@@ -2,10 +2,15 @@ const db = require("./db-config");
 const shortid = require("shortid");
 
 module.exports = {
+  getAllUrls,
   getUrl,
   setUrl,
   checkUrl,
 };
+
+function getAllUrls() {
+  return db("url");
+}
 
 function getUrl(id) {
   return db("url").where({ id }).first();
