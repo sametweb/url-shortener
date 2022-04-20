@@ -1,80 +1,58 @@
 require("dotenv").config();
 const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
+const { createUrlObject, checkHashExists } = require("./utils/urlUtils");
+const { MongoClient } = require("mongodb");
 
-const server = express();
+const user = process.env.MONGODB_USER;
+const pass = process.env.MONGODB_PASS;
+const uri = `mongodb+srv://${user}:${pass}@cluster0.hbui9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
-const Url = require("./database/url-model");
+const app = express();
+app.use(express.json());
 
-server.use(express.json());
-server.use(cors());
-server.use(helmet());
-
-const cache = {};
-
-server.get("/", async (req, res) => {
+app.get("/:hash", async (req, res) => {
+  const client = app.locals.db;
+  const hash = req.params.hash;
   try {
-    const urls = await Url.getAllUrls();
-    res.status(200).json(urls);
+    const url = await client.db("omiturl").collection("urls").findOne({ hash });
+    // TODO: Update log values
+    if (url) return res.status(200).json(url);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error fetching all URLs", error });
+    return res
+      .status(500)
+      .json({ message: "Error fetching requested URL", error });
   }
+  return res.status(404).json({ message: "Requested URL cannot be found" });
 });
 
-server.get("/:id", async (req, res) => {
-  const { id } = req.params;
-
-  if (cache[id] !== undefined) {
-    res.redirect(cache[id].url);
-  } else {
-    try {
-      let result = await Url.getUrl(id);
-      cache[id] = result;
-      res.redirect(result.url);
-    } catch {
-      res.redirect(`${process.env.FRONT_END}/not-found`);
+app.post("/", async (req, res) => {
+  console.log("Post request");
+  const client = app.locals.db;
+  const url = req.body.url;
+  try {
+    const urls = await client.db("omiturl").collection("urls");
+    let urlObject = createUrlObject(url);
+    let hashExists = await checkHashExists(client, urlObject.hash);
+    while (hashExists) {
+      console.log(hashExists);
+      urlObject = createUrlObject(url);
+      hashExists = await checkHashExists(client, urlObject.hash);
     }
+    const result = await urls.insertOne(urlObject);
+    // TODO: Add fields for logging
+    const inserted = await urls.findOne({ _id: result.insertedId });
+    return res.status(201).json(inserted);
+  } catch (error) {
+    return res.status(500).json({ message: "Error creating short URL", error });
   }
 });
 
-server.post("/", async (req, res) => {
-  console.log("hostname", req.hostname);
-  const { user_id } = req;
-  const { url } = req.body;
+const PORT = process.env.PORT || 3000;
 
-  if (!url) {
-    res
-      .status(400)
-      .json({
-        message: "You must provide a url parameter in the request body.",
-      })
-      .end();
-  } else {
-    try {
-      let result = await Url.checkUrl(url, user_id);
-      cache[result.id] = result;
-      res.status(200).json(result);
-    } catch {
-      let result = await Url.setUrl(url, user_id);
-      cache[result.id] = result;
-      res.status(201).json(result);
-    }
-  }
-});
-
-server.get(
-  "/.well-known/acme-challenge/8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk",
-  (req, res) => {
-    res.send(
-      "8-B-AJpG4DOxRbb1PbOAB7kmlAGydC6o1vlPnNGPzUk.Wz3C7IFAfMOY58c3qdkr3FQNtww-Hl23OduJFBWwtgo"
-    );
-  }
-);
-
-const PORT = process.env.PORT || 4000;
-
-server.listen(PORT, () => {
-  console.log("server is working on 4000");
+new MongoClient(uri).connect((err, connectedDb) => {
+  if (err) throw err;
+  app.locals.db = connectedDb;
+  app.listen(PORT, () =>
+    console.log(`App is running on http://localhost:${PORT}`)
+  );
 });

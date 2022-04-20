@@ -1,31 +1,16 @@
 {
-  "name": "url-shortener",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "server": "nodemon index.js",
-    "client": "cd client && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "node gcpSetup.js"
+    "start": "nodemon index.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "firebase-admin": "^9.2.0",
-    "helmet": "^4.1.1",
-    "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.6",
-    "pg": "^8.4.0",
-    "shortid": "^2.2.15",
-    "uuid": "^8.3.1"
+    "crypto-js": "^4.1.1",
+    "express": "^4.17.3",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "dotenv": "^16.0.0",
+    "nodemon": "^2.0.15"
   }
 }
