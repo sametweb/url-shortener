@@ -1,5 +1,5 @@
 const db = require("./db-config");
-const shortid = require("shortid");
+const { nanoid } = require("nanoid");
 
 module.exports = {
   getAllUrls,
@@ -17,7 +17,7 @@ function getUrl(id) {
 }
 
 function setUrl(url, user_id) {
-  const id = shortid.generate();
+  const id = nanoid(8);
 
   return db("url")
     .insert({ id, url, user_id }, "id")
